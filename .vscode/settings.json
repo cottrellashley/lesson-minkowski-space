@@ -1,0 +1,53 @@
+{
+  "// UI Customization - Hide Developer Tools": "",
+  "workbench.statusBar.visible": false,
+  "workbench.sideBar.location": "right",
+  "editor.minimap.enabled": false,
+  "editor.lineNumbers": "on",
+  "editor.scrollBeyondLastLine": false,
+  "editor.glyphMargin": false,
+  "editor.folding": false,
+  "editor.renderWhitespace": "none",
+  "editor.renderControlCharacters": false,
+  "breadcrumbs.enabled": false,
+
+  "// Focus on Chat Interface": "",
+  "workbench.startupEditor": "none",
+  "workbench.welcomePage.walkthroughs.openOnInstall": false,
+  "workbench.panel.defaultLocation": "bottom",
+  "workbench.layoutControl.enabled": false,
+  "workbench.editor.showTabs": "multiple",
+  "terminal.integrated.tabs.enabled": false,
+
+  "// Text Formatting for Readability": "",
+  "editor.fontSize": 14,
+  "editor.lineHeight": 1.6,
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "charliermarsh.ruff",
+
+  "// Hide Unnecessary Features": "",
+  "explorer.enabled": true,
+  "search.location": "side",
+  "scm.alwaysShowRepositories": false,
+  "debug.showInlineBreakpointCandidates": false,
+  "chat.commandCenter.enabled": false,
+  "files.exclude": {},
+
+  "// Editor Colors - Calm, Learning-Focused": "",
+  "workbench.colorTheme": "GitHub Light Default",
+  "editor.tokenColorCustomizations": {},
+
+  "// File Associations": "",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.fontSize": 15
+  },
+  "workbench.activityBar.location": "left",
+  "editor.guides.indentation": false,
+  "markdown.preview.scrollEditorWithPreview": false
+}

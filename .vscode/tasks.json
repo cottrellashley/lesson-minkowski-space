@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Start Interactive Lesson",
+      "type": "shell",
+      "command": "uv run marimo edit lesson-content/minkowski-space.py --watch --headless --no-token",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      }
+    },
+    {
+      "label": "📖 Run Lesson Notebook",
+      "type": "shell",
+      "command": "uv run marimo run lesson-content/minkowski-space.py",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "🔄 Restart Kernel",
+      "type": "shell",
+      "command": "pkill -f 'marimo edit' ; sleep 1 && uv run marimo edit lesson-content/minkowski-space.py --watch --headless --no-token",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ]
+}
