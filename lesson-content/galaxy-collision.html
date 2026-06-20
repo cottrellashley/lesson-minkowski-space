@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy Collision Simulation</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; color: #ccc; font-family: 'Courier New', monospace; overflow: hidden; }
+  canvas { display: block; }
+  #ui {
+    position: fixed; top: 16px; left: 16px;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 14px 18px;
+    width: 240px;
+    z-index: 10;
+  }
+  #ui h2 { font-size: 13px; color: #aaa; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .row { margin-bottom: 10px; }
+  .row label { display: flex; justify-content: space-between; font-size: 11px; color: #888; margin-bottom: 3px; }
+  .row label span { color: #ddd; }
+  input[type=range] { width: 100%; accent-color: #5af; cursor: pointer; }
+  .buttons { display: flex; gap: 8px; margin-top: 12px; }
+  button {
+    flex: 1; padding: 7px 0; border: 1px solid #444; border-radius: 4px;
+    background: #111; color: #ccc; font-size: 11px; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  button:hover { background: #1a1a2e; border-color: #5af; color: #5af; }
+  #info {
+    position: fixed; bottom: 16px; left: 16px;
+    font-size: 10px; color: #444; letter-spacing: 1px;
+  }
+  #stats {
+    position: fixed; top: 16px; right: 16px;
+    font-size: 11px; color: #555; text-align: right;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="ui">
+  <h2>Galaxy Collision</h2>
+
+  <div class="row">
+    <label>Stars per galaxy <span id="lStars">200</span></label>
+    <input type="range" id="sStars" min="50" max="500" step="50" value="200">
+  </div>
+  <div class="row">
+    <label>Galactic mass <span id="lMass">1.0</span></label>
+    <input type="range" id="sMass" min="0.3" max="3.0" step="0.1" value="1.0">
+  </div>
+  <div class="row">
+    <label>Approach speed <span id="lSpeed">0.5</span></label>
+    <input type="range" id="sSpeed" min="0.1" max="1.5" step="0.1" value="0.5">
+  </div>
+  <div class="row">
+    <label>Impact offset <span id="lImpact">0.15</span></label>
+    <input type="range" id="sImpact" min="0.00" max="0.50" step="0.01" value="0.15">
+  </div>
+  <div class="row">
+    <label>Disk radius <span id="lRadius">120</span></label>
+    <input type="range" id="sRadius" min="60" max="200" step="10" value="120">
+  </div>
+  <div class="row">
+    <label>Time step <span id="lDt">1.0</span>×</label>
+    <input type="range" id="sDt" min="0.2" max="3.0" step="0.1" value="1.0">
+  </div>
+  <div class="row">
+    <label>Trail length <span id="lTrail">92</span>%</label>
+    <input type="range" id="sTrail" min="70" max="99" step="1" value="92">
+  </div>
+
+  <div class="buttons">
+    <button id="btnPlay">⏸ Pause</button>
+    <button id="btnReset">↺ Reset</button>
+  </div>
+</div>
+
+<div id="stats">
+  <div id="sTime">t = 0</div>
+  <div id="sSep">separation = —</div>
+  <div id="sPhase">phase: approach</div>
+</div>
+
+<div id="info">N-body · Velocity Verlet · Stars interact with galactic cores only</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── Parameters ─────────────────────────────────────────────────────────────
+const params = {
+  nStars: 200,
+  mass: 1.0,
+  speed: 0.5,
+  impact: 0.15,
+  radius: 120,
+  dt: 1.0,
+  trail: 0.92,
+};
+
+// ── Sliders ──────────────────────────────────────────────────────────────
+function bindSlider(id, labelId, key, parse) {
+  const el = document.getElementById(id);
+  const lb = document.getElementById(labelId);
+  el.addEventListener('input', () => {
+    params[key] = parse(el.value);
+    lb.textContent = el.value;
+  });
+}
+bindSlider('sStars', 'lStars', 'nStars', Number);
+bindSlider('sMass',  'lMass',  'mass',   parseFloat);
+bindSlider('sSpeed', 'lSpeed', 'speed',  parseFloat);
+bindSlider('sImpact','lImpact','impact', parseFloat);
+bindSlider('sRadius','lRadius','radius', Number);
+bindSlider('sDt',    'lDt',    'dt',     parseFloat);
+bindSlider('sTrail', 'lTrail', 'trail',  v => parseFloat(v)/100);
+
+// ── Physics ────────────────────────────────────────────────────────────────
+const G = 800;        // gravitational constant (scaled for screen)
+const SOFT = 30;      // softening length (px) to prevent singularity
+const CORE_MASS_MULT = 40; // cores are much heavier than individual stars
+
+let cores = [];   // [{x,y,vx,vy,mass,color}]
+let stars = [];   // [{x,y,vx,vy,ax,ay,galaxy}]  galaxy ∈ {0,1}
+let t = 0;
+let running = true;
+
+function circularOrbitVelocity(cx, cy, mass, x, y) {
+  const dx = x - cx, dy = y - cy;
+  const r = Math.sqrt(dx*dx + dy*dy) || 1;
+  const v = Math.sqrt(G * mass * CORE_MASS_MULT / r);
+  // perpendicular to radius
+  return { vx: -v * dy / r, vy: v * dx / r };
+}
+
+function initGalaxy(gx, gy, cvx, cvy, mass, nStars, radius, galaxy) {
+  const core = { x: gx, y: gy, vx: cvx, vy: cvy, mass: mass * CORE_MASS_MULT, galaxy };
+  const starList = [];
+  for (let i = 0; i < nStars; i++) {
+    // Exponential disk profile
+    const r = radius * Math.pow(Math.random(), 0.5) * (0.2 + 0.8 * Math.random());
+    const theta = Math.random() * 2 * Math.PI;
+    // Slight thickness in y
+    const zOff = (Math.random() - 0.5) * radius * 0.08;
+    const x = gx + r * Math.cos(theta);
+    const y = gy + r * Math.sin(theta) + zOff;
+    const orb = circularOrbitVelocity(gx, gy, mass, x, y);
+    starList.push({
+      x, y,
+      vx: cvx + orb.vx,
+      vy: cvy + orb.vy,
+      ax: 0, ay: 0,
+      galaxy,
+    });
+  }
+  return { core, stars: starList };
+}
+
+function init() {
+  t = 0;
+  const cx = W / 2, cy = H / 2;
+  const sep = Math.min(W, H) * 0.38;
+  const yOffset = sep * params.impact;
+  const yDrift = Math.max(0.03, params.impact * 0.6);
+
+  // Galaxy A: comes from left, slight upward drift
+  const gA = initGalaxy(
+    cx - sep, cy - yOffset,
+    params.speed * 0.7,  params.speed * yDrift,
+    params.mass, params.nStars, params.radius, 0
+  );
+  // Galaxy B: comes from right, slight downward drift
+  const gB = initGalaxy(
+    cx + sep, cy + yOffset,
+    -params.speed * 0.7, -params.speed * yDrift,
+    params.mass, params.nStars, params.radius, 1
+  );
+
+  cores = [gA.core, gB.core];
+  stars = [...gA.stars, ...gB.stars];
+
+  // Pre-compute initial accelerations
+  stars.forEach(s => computeStarAccel(s));
+}
+
+function gravAccel(x, y, cx, cy, mass) {
+  const dx = cx - x, dy = cy - y;
+  const r2 = dx*dx + dy*dy + SOFT*SOFT;
+  const r = Math.sqrt(r2);
+  const f = G * mass / r2;
+  return { ax: f * dx / r, ay: f * dy / r };
+}
+
+function computeStarAccel(s) {
+  s.ax = 0; s.ay = 0;
+  for (const c of cores) {
+    const a = gravAccel(s.x, s.y, c.x, c.y, c.mass);
+    s.ax += a.ax; s.ay += a.ay;
+  }
+}
+
+function computeCoreAccel(c) {
+  let ax = 0, ay = 0;
+  for (const other of cores) {
+    if (other === c) continue;
+    const a = gravAccel(c.x, c.y, other.x, other.y, other.mass);
+    ax += a.ax; ay += a.ay;
+  }
+  return { ax, ay };
+}
+
+function step() {
+  const dt = params.dt * 0.4;
+
+  // Verlet integration for stars (cores → stars only, not star-star)
+  for (const s of stars) {
+    const ax0 = s.ax, ay0 = s.ay;
+    s.x += s.vx * dt + 0.5 * ax0 * dt * dt;
+    s.y += s.vy * dt + 0.5 * ay0 * dt * dt;
+    computeStarAccel(s);
+    s.vx += 0.5 * (ax0 + s.ax) * dt;
+    s.vy += 0.5 * (ay0 + s.ay) * dt;
+  }
+
+  // Verlet for cores (mutual)
+  const coreAccels = cores.map(c => computeCoreAccel(c));
+  for (let i = 0; i < cores.length; i++) {
+    const c = cores[i];
+    const { ax: ax0, ay: ay0 } = coreAccels[i];
+    c.x += c.vx * dt + 0.5 * ax0 * dt * dt;
+    c.y += c.vy * dt + 0.5 * ay0 * dt * dt;
+  }
+  const coreAccels2 = cores.map(c => computeCoreAccel(c));
+  for (let i = 0; i < cores.length; i++) {
+    const c = cores[i];
+    c.vx += 0.5 * (coreAccels[i].ax + coreAccels2[i].ax) * dt;
+    c.vy += 0.5 * (coreAccels[i].ay + coreAccels2[i].ay) * dt;
+  }
+
+  t += dt;
+}
+
+// ── Color palettes ─────────────────────────────────────────────────────────
+// Galaxy 0: blue-white,  Galaxy 1: amber-gold
+function starColor(galaxy, speed) {
+  const s = Math.min(speed / 4, 1);
+  if (galaxy === 0) {
+    const r = Math.round(100 + s * 155);
+    const g = Math.round(150 + s * 80);
+    const b = 255;
+    return `rgb(${r},${g},${b})`;
+  } else {
+    const r = 255;
+    const g = Math.round(160 + s * 60);
+    const b = Math.round(s * 80);
+    return `rgb(${r},${g},${b})`;
+  }
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function draw() {
+  // Trail: semi-transparent black overlay
+  ctx.fillStyle = `rgba(0,0,0,${1 - params.trail})`;
+  ctx.fillRect(0, 0, W, H);
+
+  // Stars
+  for (const s of stars) {
+    const speed = Math.sqrt(s.vx*s.vx + s.vy*s.vy);
+    ctx.fillStyle = starColor(s.galaxy, speed);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, 0.9, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Cores — bright glow
+  const coreColors = ['#7adcff', '#ffd060'];
+  for (let i = 0; i < cores.length; i++) {
+    const c = cores[i];
+    const grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, 18);
+    grad.addColorStop(0, coreColors[i]);
+    grad.addColorStop(0.3, coreColors[i] + 'aa');
+    grad.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, 18, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    // Hard bright center
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+  }
+}
+
+function updateStats() {
+  const dx = cores[0].x - cores[1].x;
+  const dy = cores[0].y - cores[1].y;
+  const sep = Math.round(Math.sqrt(dx*dx + dy*dy));
+  document.getElementById('sTime').textContent = `t = ${Math.round(t)}`;
+  document.getElementById('sSep').textContent = `separation = ${sep} px`;
+
+  let phase;
+  if (sep > Math.min(W,H)*0.5) phase = 'approach';
+  else if (sep > params.radius * 1.5) phase = 'first pass';
+  else if (sep > params.radius * 0.6) phase = 'interaction';
+  else phase = 'merger';
+  document.getElementById('sPhase').textContent = `phase: ${phase}`;
+}
+
+// ── Loop ───────────────────────────────────────────────────────────────────
+function loop() {
+  if (running) {
+    step(); step(); step(); // sub-steps per frame for smoother physics
+    draw();
+    updateStats();
+  }
+  requestAnimationFrame(loop);
+}
+
+// ── Controls ───────────────────────────────────────────────────────────────
+document.getElementById('btnPlay').addEventListener('click', function() {
+  running = !running;
+  this.textContent = running ? '⏸ Pause' : '▶ Play';
+});
+document.getElementById('btnReset').addEventListener('click', () => {
+  // Clear canvas first
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+  init();
+  running = true;
+  document.getElementById('btnPlay').textContent = '⏸ Pause';
+});
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+init();
+loop();
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.10",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "5133741f26daa4f88c4891985304bdf1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "Matplotlib is building the font cache; this may take a moment.\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "5642976e4a0f0989a1df6dc9b1dcaa77",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"minkowski-spacetime-an-interactive-journey\">\ud83c\udf0c Minkowski Spacetime: An Interactive Journey</h1>\n<span class=\"paragraph\">Welcome to the geometric heart of special relativity!</span>\n<span class=\"paragraph\">This lesson is designed to build your <em>intuition</em> for spacetime before we work with equations.\nBy the end, you'll understand:</span>\n<ul>\n<li>Why light speed is the speed limit</li>\n<li>How time and space are interwoven</li>\n<li>Why moving clocks run slow (from geometry!)</li>\n<li>How simultaneity is relative</li>\n</ul>\n<span class=\"paragraph\"><strong>Start here:</strong> What's your background with special relativity?</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "cd178fc7de4f4b71ece51c6b431ef3ac",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "b73f734e1d1981c13db8b72d92e74ba3",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "6b2855c80b16745dbb8d186c65fa3d0b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"part-1-why-relativity\">Part 1: Why Relativity?</h2>\n<span class=\"paragraph\">Imagine you're on a train throwing a ball forward. You throw at 10 m/s.\nSomeone outside sees the ball at (train speed + 10 m/s).</span>\n<span class=\"paragraph\"><strong>This is Galilean relativity\u2014velocities add.</strong></span>\n<span class=\"paragraph\">But light is weird. A light beam travels at 300,000 km/s in all frames.</span>\n<ul>\n<li>If YOU'RE moving at 0.9c and shine a light forward...</li>\n<li>The light still travels at c (not 1.9c!)</li>\n</ul>\n<span class=\"paragraph\">This destroys classical physics. So Einstein asked: <em>What's different about spacetime?</em></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "4aad7cf02ab5870e795ca565d5be62b3",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "f39d3377277ccd8d0687ec6ccda13e5b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "b60a347f93ac09a82f5a46b2204f43c0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"part-2-spacetime-diagrams-the-foundation\">Part 2: Spacetime Diagrams (The Foundation)</h2>\n<span class=\"paragraph\">Einstein's insight was geometric. He realized that space and time aren't separate\u2014\nthey're woven into a single fabric: <strong>spacetime</strong>.</span>\n<span class=\"paragraph\"><strong>Minkowski diagrams</strong> are how we visualize this:</span>\n<ul>\n<li><strong>Horizontal axis (x):</strong> Space</li>\n<li><strong>Vertical axis (t):</strong> Time</li>\n<li><strong>45\u00b0 line:</strong> Path of a light beam (c = 1 in our units)</li>\n<li><strong>Vertical line:</strong> Stationary observer</li>\n<li><strong>Tilted line:</strong> Moving observer</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "b49bf843b47f78672cd4ff9f1c2cf16f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "8cb6b08d24a5d34e4777fcf8659b2591",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"part-3-time-dilation-from-geometry\">Part 3: Time Dilation (From Geometry!)</h2>\n<span class=\"paragraph\">Now here's the magic: we can <em>see</em> time dilation in the diagram.</span>\n<span class=\"paragraph\">Imagine two events on a moving observer's worldline:</span>\n<ul>\n<li>They mark 1 second on their clock (proper time)</li>\n<li>But this 1 second looks <em>stretched</em> when viewed by the stationary observer!</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "4c2a2d22b03b1d07b36832f213612eff",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "306d430f366ed485fce963812b01549f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "801888469089df02f627e3a4f8918916",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "ac7ec6b236519ba4c5881a047840455e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "3e6c36f677889078cd7e9264ae50fe2f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "32d65ab3c919a7f6702a95bf02b65283",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "adee10e931bc68d7771664ce4920d893",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"part-5-relativity-of-simultaneity-the-deep-one\">Part 5: Relativity of Simultaneity (The Deep One!)</h2>\n<span class=\"paragraph\">Einstein's most profound insight: there is no universal \"now.\"</span>\n<span class=\"paragraph\">What's simultaneous in one frame is <em>not</em> simultaneous in another frame!</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "e729f55798af8eca7adab6214544b322",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "2c38380942399390d3c0d39a408481ad",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "c1c2286fd4e833f8b68285d15a19d190",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "fc4b7358713e786186dd80c411ede650",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"part-6-the-geometry-underneath-4-vectors\">Part 6: The Geometry Underneath (4-Vectors)</h2>\n<span class=\"paragraph\">All of these effects\u2014time dilation, length contraction, relativity of simultaneity\u2014\ncome from a single geometric fact:</span>\n<span class=\"paragraph\"><strong>The spacetime interval is invariant.</strong></span>\n<span class=\"paragraph\">In relativity, we don't measure distance like Pythagoras:</span>\n<marimo-tex class=\"arithmatex\">||[d^2 = (\\Delta x)^2 + (\\Delta t)^2||]</marimo-tex><span class=\"paragraph\">Instead, we measure the <em>spacetime interval</em>:</span>\n<marimo-tex class=\"arithmatex\">||[s^2 = (\\Delta t)^2 - (\\Delta x)^2||]</marimo-tex><span class=\"paragraph\">(With c=1; multiply by c\u00b2 for real units)</span>\n<span class=\"paragraph\">This <em>looks</em> like Pythagoras with a minus sign. It's called the <strong>Minkowski metric</strong>.</span>\n<span class=\"paragraph\"><strong>The magic:</strong> This interval is the <em>same in all reference frames</em>!</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "6acc5d38ffc00f8a26dbd806ea3bc6a4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"example-invariant-interval\">Example: Invariant Interval</h3>\n<span class=\"paragraph\">You're at rest. Your friend zooms by at 0.6c.\nYou both observe two light flashes separated by:</span>\n<ul>\n<li>3 seconds in your frame</li>\n<li>1 light-second in space</li>\n</ul>\n<span class=\"paragraph\"><strong>In your frame:</strong></span>\n<marimo-tex class=\"arithmatex\">||[s^2 = (\\Delta t)^2 - (\\Delta x)^2 = 3^2 - 1^2 = 9 - 1 = 8||]</marimo-tex><span class=\"paragraph\"><strong>In your friend's frame (moving at 0.6c):</strong></span>\n<ul>\n<li>The events get Lorentz transformed...</li>\n<li>But when you calculate the interval:</li>\n</ul>\n<marimo-tex class=\"arithmatex\">||[s^2 = (\\Delta t')^2 - (\\Delta x')^2 = 8||]</marimo-tex><span class=\"paragraph\"><strong>Same!</strong> This is why all the relativistic effects work:\nthey're just different ways of splitting the invariant interval into space and time.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "16d3065d081d4adfc601e8f1c35290de",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"summary-the-geometric-picture\">Summary: The Geometric Picture</h2>\n<span class=\"paragraph\">Spacetime isn't flat Euclidean geometry (with Pythagoras).</span>\n<span class=\"paragraph\">It's <strong>Minkowski geometry</strong> (with the interval).</span>\n<span class=\"paragraph\">Every relativistic effect flows from this one geometric fact:</span>\n<table>\n<thead>\n<tr>\n<th>Effect</th>\n<th>Why?</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Time dilation</td>\n<td>Moving clocks travel at an angle through spacetime</td>\n</tr>\n<tr>\n<td>Length contraction</td>\n<td>Rulers aligned in different directions through spacetime</td>\n</tr>\n<tr>\n<td>Relativity of simultaneity</td>\n<td>Different frames have different \"horizontal\" slices through spacetime</td>\n</tr>\n<tr>\n<td>Nothing faster than light</td>\n<td>Worldlines steeper than 45\u00b0 would exceed light speed</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>The deeper truth:</strong></span>\n<span class=\"paragraph\">Special relativity isn't about strange quantum effects or abstract math.\nIt's about the <em>geometry</em> of the universe.</span>\n<span class=\"paragraph\">Once you see the Minkowski diagram, everything becomes obvious.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "51b0440822f665961c90e3cfddc6d728",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"final-challenge-connect-the-dots\">Final Challenge: Connect the Dots</h2>\n<span class=\"paragraph\">Now that you understand the geometry, try this:</span>\n<span class=\"paragraph\"><strong>Question:</strong> If you travel in a spaceship at 0.9c for 1 year (your time),\nhow much time passes on Earth?</span>\n<span class=\"paragraph\">Use the formula:</span>\n<marimo-tex class=\"arithmatex\">||[\\Delta t = \\gamma \\Delta t_0 = \\frac{\\Delta t_0}{\\sqrt{1 - v^2/c^2}}||]</marimo-tex><span class=\"paragraph\">Then think: Why does this make sense in the Minkowski diagram?</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "aeac86476782045dc7366923666f9b59",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "fdacdec73ab9731e10b25cf4066ea255",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "5de9a5ed0b16824e18554a1180f1f1f4",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "d04954339242c3b18d21c4ddf5182c81",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"whats-next\">What's Next?</h2>\n<span class=\"paragraph\">You now understand the geometric heart of special relativity!</span>\n<span class=\"paragraph\">If you want to go deeper, the next steps are:</span>\n<ol>\n<li><strong>Lorentz Transformations</strong> - How coordinates actually change between frames</li>\n<li><strong>4-Vectors</strong> - How momentum and energy are unified in spacetime</li>\n<li><strong>General Relativity</strong> - Curved spacetime and gravity</li>\n</ol>\n<span class=\"paragraph\">But remember: everything you learn will be a consequence of\nthe geometric picture you see here.</span>\n<span class=\"paragraph\"><strong>The universe is written in the language of geometry.</strong></span>\n<span class=\"paragraph\">\ud83c\udf0c</span></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

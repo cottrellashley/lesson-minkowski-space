@@ -1,0 +1,275 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.10",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "ef0032c4370d821ec8e83d0954968f66",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "148cdbd5f2a577a586b38b74f723d291",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"schwarzschild-derivation-book-grounded\">Schwarzschild Derivation (Book-Grounded)</h1>\n<span class=\"paragraph\">This notebook follows the derivation in:</span>\n<span class=\"paragraph\"><strong>Lecture Notes - Extensive &amp; Advanced</strong></span>\n<ul>\n<li>Chapter 24.2 and 24.3</li>\n<li>Printed pages 498-504</li>\n<li>PDF pages 499-505</li>\n</ul>\n<span class=\"paragraph\">Page mapping rule used here:</span>\n<ul>\n<li>printed page = PDF page - 1</li>\n</ul>\n<span class=\"paragraph\">So every equation in this notebook tracks the chapter sequence:\n<marimo-tex class=\"arithmatex\">||((24.1) \\rightarrow (24.6) \\rightarrow (24.17) \\rightarrow (24.25) \\rightarrow (24.33)||)</marimo-tex>.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "06203062c4b2bb2eecd13fac8067d909",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"reading-guide-exact-pages\">Reading Guide (Exact Pages)</h2>\n<ul>\n<li>Setup and symmetry assumptions: 24.2<ul>\n<li>printed 498-501, PDF 499-502</li>\n</ul>\n</li>\n<li>Solving Einstein equations: 24.3<ul>\n<li>printed 501-504, PDF 502-505</li>\n</ul>\n</li>\n<li>Coordinate interpretation and radius discussion: 24.4<ul>\n<li>starts at printed 505, PDF 506</li>\n</ul>\n</li>\n</ul>\n<span class=\"paragraph\">If you want to audit any step, jump directly to those page windows.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "535b1ef3fe42884fc66c5bb001046e93",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='vblA-0' random-id='e5a78607-5f48-bfde-d942-fa6d0115ba1c'><marimo-radio data-initial-value='&quot;Full detail&quot;' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eMode:&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;Equation flow&quot;,&quot;Equation + intuition&quot;,&quot;Full detail&quot;]' data-inline='false' data-disabled='false'></marimo-radio></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "dc83de9ab01546d0ff0d3d081f61e747",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Selected mode:</strong> Full route: assumptions, coordinate choices, reduced equations, constants, and interpretation.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "8155c69eb0eca677d64db800951c8899",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"1-start-from-the-general-static-spherically-symmetric-ansatz-eq-241\">1) Start from the general static, spherically symmetric ansatz (Eq. 24.1)</h2>\n<span class=\"paragraph\">The notes begin with</span>\n<marimo-tex class=\"arithmatex\">||[\nds^2 = -A(r)dt^2 + B(r)dr^2 + 2C(r)dr\\,dt + D(r)r^2(d\\theta^2 + \\sin^2\\theta\\,d\\phi^2).\n||]</marimo-tex><span class=\"paragraph\">Then they simplify this ansatz by coordinate redefinitions:</span>\n<ul>\n<li>remove the cross-term via a new time coordinate (Eqs. 24.2-24.4), so <marimo-tex class=\"arithmatex\">||(C(r)=0||)</marimo-tex></li>\n<li>absorb <marimo-tex class=\"arithmatex\">||(D(r)||)</marimo-tex> into a new radial coordinate</li>\n</ul>\n<span class=\"paragraph\">yielding the <strong>standard form</strong> (Eq. 24.6):</span>\n<marimo-tex class=\"arithmatex\">||[\nds^2 = -A(r)dt^2 + B(r)dr^2 + r^2(d\\theta^2 + \\sin^2\\theta\\,d\\phi^2).\n||]</marimo-tex></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "464dd8d72e35a16d9bee13815c637d75",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"2-boundary-condition-from-asymptotic-flatness-eq-2415\">2) Boundary condition from asymptotic flatness (Eq. 24.15)</h2>\n<span class=\"paragraph\">The book imposes</span>\n<marimo-tex class=\"arithmatex\">||[\n\\lim_{r\\to\\infty}A(r)=1,\\qquad \\lim_{r\\to\\infty}B(r)=1,\n||]</marimo-tex><span class=\"paragraph\">because far from the source spacetime should approach Minkowski space.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "7a988dc7d6d63918e7e1212717e77184",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"3-christoffel-symbols-used-in-the-derivation-eq-2417\">3) Christoffel symbols used in the derivation (Eq. 24.17)</h2>\n<span class=\"paragraph\">For the metric in Eq. (24.6), the non-zero Christoffels listed in the notes are:</span>\n<marimo-tex class=\"arithmatex\">||[\n\\Gamma^r_{rr}=\\frac{B'}{2B},\\quad\n\\Gamma^r_{tt}=\\frac{A'}{2B},\\quad\n\\Gamma^r_{\\theta\\theta}=-\\frac{r}{B},\\quad\n\\Gamma^r_{\\phi\\phi}=-\\frac{r\\sin^2\\theta}{B},\n||]</marimo-tex><marimo-tex class=\"arithmatex\">||[\n\\Gamma^\\theta_{\\theta r}=\\Gamma^\\phi_{\\phi r}=\\frac{1}{r},\\quad\n\\Gamma^t_{tr}=\\frac{A'}{2A},\\quad\n\\Gamma^\\theta_{\\phi\\phi}=-\\sin\\theta\\cos\\theta,\\quad\n\\Gamma^\\phi_{\\phi\\theta}=\\cot\\theta.\n||]</marimo-tex><span class=\"paragraph\">(Prime means <marimo-tex class=\"arithmatex\">||(d/dr||)</marimo-tex>.)</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "a5c1e045fcf847887a4078fd0b0ab22c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4-ricci-components-in-the-notes-eq-2425\">4) Ricci components in the notes (Eq. 24.25)</h2>\n<span class=\"paragraph\">The reduced Ricci components are</span>\n<marimo-tex class=\"arithmatex\">||[\nR_{tt}=\\frac{A''}{2B}-\\frac{A'}{4B}\\left(\\frac{A'}{A}+\\frac{B'}{B}\\right)+\\frac{A'}{rB},\n||]</marimo-tex><marimo-tex class=\"arithmatex\">||[\nR_{rr}=-\\frac{A''}{2A}+\\frac{A'}{4A}\\left(\\frac{A'}{A}+\\frac{B'}{B}\\right)+\\frac{B'}{rB},\n||]</marimo-tex><marimo-tex class=\"arithmatex\">||[\nR_{\\theta\\theta}=1-\\frac{1}{B}-\\frac{r}{2B}\\left(\\frac{A'}{A}-\\frac{B'}{B}\\right).\n||]</marimo-tex><span class=\"paragraph\">In vacuum, set each to zero.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "d3eb84fc5101e5c7d0ff562b05d2753c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"5-key-linear-combination-eq-2426-2428\">5) Key linear combination (Eq. 24.26 -&gt; 24.28)</h2>\n<span class=\"paragraph\">The notes take</span>\n<marimo-tex class=\"arithmatex\">||[\nB R_{tt} + A R_{rr} = \\frac{1}{rB}(A'B+B'A)=0\n||]</marimo-tex><span class=\"paragraph\">so</span>\n<marimo-tex class=\"arithmatex\">||[\nA'B+B'A=0\n\\Rightarrow A(r)B(r)=\\text{const}.\n||]</marimo-tex><span class=\"paragraph\">Asymptotic flatness fixes the constant to 1, therefore</span>\n<marimo-tex class=\"arithmatex\">||[\nB(r)=\\frac{1}{A(r)}.\n||]</marimo-tex></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "cc29d41b7c6e4eca0a69f56f04a1c3c8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"6-solve-with-r_thetatheta0-eq-2429-2430\">6) Solve with <marimo-tex class=\"arithmatex\">||(R_{\\theta\\theta}=0||)</marimo-tex> (Eq. 24.29 -&gt; 24.30)</h2>\n<span class=\"paragraph\">Substitute <marimo-tex class=\"arithmatex\">||(B=1/A||)</marimo-tex> into <marimo-tex class=\"arithmatex\">||(R_{\\theta\\theta}=0||)</marimo-tex>:</span>\n<marimo-tex class=\"arithmatex\">||[\nA-1+rA'=0\n\\iff (Ar)'=1.\n||]</marimo-tex><span class=\"paragraph\">Integrate:</span>\n<marimo-tex class=\"arithmatex\">||[\nAr=r+C\n\\Rightarrow A(r)=1+\\frac{C}{r}.\n||]</marimo-tex><span class=\"paragraph\">Then <marimo-tex class=\"arithmatex\">||(R_{tt}=R_{rr}=0||)</marimo-tex> also hold.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "31b7e1554e1ef8e126a98dbae0e691e4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"7-newtonian-matching-and-final-metric-eq-2431-2433\">7) Newtonian matching and final metric (Eq. 24.31, 24.33)</h2>\n<span class=\"paragraph\">The notes match to the weak-field limit</span>\n<marimo-tex class=\"arithmatex\">||[\nA(r)=-g_{00}\\approx 1+\\frac{2\\Phi}{c^2},\\qquad \\Phi=-\\frac{G_N M}{r},\n||]</marimo-tex><span class=\"paragraph\">giving</span>\n<marimo-tex class=\"arithmatex\">||[\nC=-\\frac{2G_NM}{c^2}.\n||]</marimo-tex><span class=\"paragraph\">So</span>\n<marimo-tex class=\"arithmatex\">||[\nds^2 = -\\left(1-\\frac{2G_NM}{c^2 r}\\right)c^2dt^2\n+\\left(1-\\frac{2G_NM}{c^2 r}\\right)^{-1}dr^2\n+r^2d\\Omega^2,\n||]</marimo-tex><span class=\"paragraph\">and with <marimo-tex class=\"arithmatex\">||(m=G_NM/c^2||)</marimo-tex> (Eq. 24.32):</span>\n<marimo-tex class=\"arithmatex\">||[\nds^2=-f(r)dt^2+f(r)^{-1}dr^2+r^2d\\Omega^2,\n\\qquad f(r)=1-\\frac{2m}{r}.\n||]</marimo-tex></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "750a8fd8163fbe10e9c41bd105f0e964",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='ZHCJ-0' random-id='cfba4454-be5e-286e-a944-827eef7b9ba4'><marimo-slider data-initial-value='3.0' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eMass parameter m = GM/c^2&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.5' data-stop='15.0' data-step='0.5' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element><marimo-ui-element object-id='ZHCJ-1' random-id='c0162823-b227-bf6d-4b26-96d504f03915'><marimo-slider data-initial-value='12.0' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eRadius r&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.6' data-stop='60.0' data-step='0.1' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "1dc3a90faa57ddf45f97afc39afc0cc7",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'm' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'rs' was defined by another cell",
+          "traceback": []
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "35265e443cd6fa873299b23773634195",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'm' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'rs' was defined by another cell",
+          "traceback": []
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "7fd0aa28a3dba0e73bdaa815e021a6bf",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "module 'marimo' has no attribute 'pyplot'",
+          "traceback": null
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/l_/wvrv60717blgdszn4t5_wd080000gn/T/marimo_20226/__marimo__cell_qnkX_.py&quot;</span>, line <span class=\"m\">2</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">mo</span><span class=\"o\">.</span><span class=\"n\">pyplot</span><span class=\"p\">(</span><span class=\"n\">fig</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^^^^^^^^^</span>\n<span class=\"gr\">AttributeError</span>: <span class=\"n\">module &#39;marimo&#39; has no attribute &#39;pyplot&#39;</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "ccc3206dd1712e2c25cff4c44d153535",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='RGSE-0' random-id='76174fa4-580d-25e7-5270-7b6aea0fc667'><marimo-radio data-initial-value='null' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eCheckpoint 1: Where does AB=1 come from?&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;From R_tt = 0 alone&quot;,&quot;From BR_tt + AR_rr = 0 with asymptotic flatness&quot;,&quot;From coordinate transformations only&quot;]' data-inline='false' data-disabled='false'></marimo-radio></marimo-ui-element><marimo-ui-element object-id='RGSE-1' random-id='d72c259c-89e2-388d-6c3c-1647e2004afd'><marimo-radio data-initial-value='null' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eCheckpoint 2: What is the intermediate A(r) form before Newtonian matching?&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;A(r)=1+C/r from integrating (Ar)&#x27;=1&quot;,&quot;A(r)=1+Cr from integrating A&#x27;=C&quot;,&quot;A(r)=C/r only&quot;]' data-inline='false' data-disabled='false'></marimo-radio></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "5f0399786e6f24643a76300fe6f3e9cb",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"feedback\">Feedback</h3>\n<ul>\n<li>Q1: Correct. That is exactly Eq. (24.26) -&gt; (24.27) plus asymptotic condition (24.15).</li>\n<li>Q2: Not quite. The step in the notes is (Ar)'=1 -&gt; Ar=r+C -&gt; A=1+C/r.</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "c26acc0f1ec1bdc149898db1967e7cb0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"final-one-screen-summary-book-sequence\">Final one-screen summary (book sequence)</h2>\n<ol>\n<li>Start with Eq. (24.1), simplify to Eq. (24.6).</li>\n<li>Compute Christoffels (Eq. 24.17).</li>\n<li>Use Ricci components (Eq. 24.25).</li>\n<li>Combine equations: Eq. (24.26) -&gt; <marimo-tex class=\"arithmatex\">||(AB=\\mathrm{const}||)</marimo-tex> -&gt; Eq. (24.28).</li>\n<li>Use <marimo-tex class=\"arithmatex\">||(R_{\\theta\\theta}=0||)</marimo-tex>: Eq. (24.29) -&gt; Eq. (24.30).</li>\n<li>Newtonian matching gives <marimo-tex class=\"arithmatex\">||(C=-2G_NM/c^2||)</marimo-tex>.</li>\n<li>Arrive at Schwarzschild metric Eq. (24.31), or Eq. (24.33) with <marimo-tex class=\"arithmatex\">||(m=G_NM/c^2||)</marimo-tex>.</li>\n</ol>\n<span class=\"paragraph\">This is exactly the derivation path in chapter 24.3.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}
