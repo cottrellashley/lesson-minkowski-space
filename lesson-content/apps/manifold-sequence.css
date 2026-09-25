@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+:root {
+  --bg: #f4efe3;
+  --panel: #fffaf0;
+  --ink: #1c1f23;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --muted: #5b6470;
+  --grid: rgba(15, 118, 110, 0.22);
+  --danger: #be123c;
+  --ok: #166534;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(180, 83, 9, 0.14), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(15, 118, 110, 0.2), transparent 42%),
+    linear-gradient(180deg, #f6f1e8 0%, #efe6d6 100%);
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+header h1 {
+  margin: 0;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  line-height: 1.15;
+}
+
+header p {
+  margin: 0.45rem 0 1rem;
+  color: var(--muted);
+  max-width: 80ch;
+}
+
+.lesson-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 1rem;
+}
+
+.stage-wrap {
+  background: var(--panel);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(28, 31, 35, 0.09);
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: min(70vh, 680px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5));
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  background: var(--panel);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 0.9rem;
+  box-shadow: 0 14px 34px rgba(28, 31, 35, 0.07);
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-family: "Fraunces", Georgia, serif;
+}
+
+.panel h3 {
+  margin: 0.2rem 0 0;
+  font-size: 1rem;
+}
+
+.control {
+  display: grid;
+  gap: 0.35rem;
+}
+
+label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+button {
+  appearance: none;
+  border: 0;
+  border-radius: 11px;
+  cursor: pointer;
+  padding: 0.62rem 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+}
+
+button.secondary {
+  background: var(--accent-2);
+}
+
+button.ghost {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+.readout {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.88rem;
+  background: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.3);
+  border-radius: 10px;
+  padding: 0.55rem;
+}
+
+.callout {
+  border-left: 4px solid var(--accent-2);
+  background: rgba(180, 83, 9, 0.08);
+  padding: 0.65rem;
+  border-radius: 8px;
+  font-size: 0.92rem;
+}
+
+.nav {
+  margin-top: 0.95rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #fff;
+  background: #1f2937;
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.86rem;
+}
+
+.nav a.current {
+  background: var(--accent);
+}
+
+.status-ok {
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.status-alert {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+@media (max-width: 920px) {
+  .lesson-shell {
+    grid-template-columns: 1fr;
+  }
+
+  canvas {
+    height: min(55vh, 480px);
+  }
+}

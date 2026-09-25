@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manifolds Step 1 - Manifold as Point Set</title>
+  <link rel="stylesheet" href="manifold-sequence.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Step 1: A Manifold Is a Set of Points</h1>
+      <p>No coordinates yet. Rotate a smooth surface in 3D and watch points appear and fade. The point-set is primary; coordinates are not yet introduced.</p>
+      <div class="callout">
+        <strong>Questions:</strong><br>
+        We have below a plane (or sphere or saddle). In geometry we can call this a manifold.<br>
+        This can be thought of as a smooth shape. These shapes have points, and that is all we assume for now.<br>
+        Just a smooth shape with a set of points. No more or less. So here are some questions for you to think about:<br>
+        How would you measure location?<br>
+        How would you measure distance between points?<br>
+        How would you measure angles?
+      </div>
+    </header>
+
+    <section class="lesson-shell">
+      <div class="stage-wrap">
+        <div class="nav" style="padding: 0.7rem 0.8rem 0; margin: 0;">
+          <button id="shape-plane" class="ghost">Plane</button>
+          <button id="shape-sphere" class="ghost">Sphere</button>
+          <button id="shape-saddle" class="ghost">Saddle</button>
+          <button id="show-points">Show Random Points</button>
+        </div>
+        <canvas id="stage" width="960" height="620" aria-label="Rotatable manifold surface with random points appearing"></canvas>
+      </div>
+
+      <aside class="panel">
+        <h2>Notes</h2>
+        <div class="callout">Start with the shape only. Then press "Show Random Points" to reveal a changing subset of the manifold points.</div>
+
+        <div class="nav">
+          <a class="current" href="manifolds-01-points-plane.html">Step 1</a>
+          <a href="manifolds-02-coordinates-lens.html">Step 2</a>
+          <a href="manifolds-03-moving-ball-invariance.html">Step 3</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("stage");
+    const ctx = canvas.getContext("2d");
+    const showPointsBtn = document.getElementById("show-points");
+    const shapeButtons = {
+      plane: document.getElementById("shape-plane"),
+      sphere: document.getElementById("shape-sphere"),
+      saddle: document.getElementById("shape-saddle")
+    };
+
+    let running = true;
+    let points = [];
+    let t = 0;
+    let shape = "plane";
+    let yaw = -0.65;
+    let pitch = 0.34;
+    let dragging = false;
+    let dragX = 0;
+    let dragY = 0;
+    let pointCount = 90;
+    let showPoints = false;
+
+    const camera = {
+      distance: 620,
+      focal: 560,
+      centerX: canvas.width / 2,
+      centerY: canvas.height / 2
+    };
+
+    function surfacePoint(currentShape, a, b) {
+      if (currentShape === "sphere") {
+        const radius = 185;
+        const theta = a;
+        const yNorm = b;
+        const ring = Math.sqrt(Math.max(0, 1 - yNorm * yNorm));
+        return {
+          x: radius * Math.cos(theta) * ring,
+          y: radius * yNorm,
+          z: radius * Math.sin(theta) * ring
+        };
+      }
+
+      if (currentShape === "saddle") {
+        const x = a * 235;
+        const y = b * 175;
+        return {
+          x,
+          y,
+          z: 95 * (a * a - b * b)
+        };
+      }
+
+      return {
+        x: a * 260,
+        y: b * 185,
+        z: 0
+      };
+    }
+
+    function rotate(p) {
+      const cy = Math.cos(yaw);
+      const sy = Math.sin(yaw);
+      const cx = Math.cos(pitch);
+      const sx = Math.sin(pitch);
+
+      const x1 = cy * p.x + sy * p.z;
+      const z1 = -sy * p.x + cy * p.z;
+      const y1 = cx * p.y - sx * z1;
+      const z2 = sx * p.y + cx * z1;
+
+      return { x: x1, y: y1, z: z2 };
+    }
+
+    function project(p) {
+      const zCam = p.z + camera.distance;
+      if (zCam < 60) {
+        return null;
+      }
+      const k = camera.focal / zCam;
+      return {
+        x: camera.centerX + p.x * k,
+        y: camera.centerY - p.y * k,
+        zCam,
+        k
+      };
+    }
+
+    function createPoints(count) {
+      pointCount = count;
+      points = [];
+
+      if (shape === "sphere") {
+        // Random sphere sampling with uniform surface-area measure.
+        for (let i = 0; i < count; i += 1) {
+          const yNorm = -1 + 2 * Math.random();
+          const theta = 2 * Math.PI * Math.random();
+          points.push({
+            a: theta,
+            b: yNorm,
+            vis: Math.random(),
+            target: Math.random() > 0.5 ? 1 : 0
+          });
+        }
+      } else {
+        // Random point locations on parameter domain for plane/saddle.
+        for (let i = 0; i < count; i += 1) {
+          const u = -1 + 2 * Math.random();
+          const v = -1 + 2 * Math.random();
+          points.push({
+            a: u,
+            b: v,
+            vis: Math.random(),
+            target: Math.random() > 0.5 ? 1 : 0
+          });
+        }
+      }
+
+    }
+
+    function setShape(nextShape) {
+      shape = nextShape;
+      for (const [name, btn] of Object.entries(shapeButtons)) {
+        btn.style.background = name === shape ? "#1e3a8a" : "#dbeafe";
+        btn.style.color = name === shape ? "#ffffff" : "#1e3a8a";
+      }
+      createPoints(pointCount);
+    }
+
+    function drawBackdrop() {
+      ctx.fillStyle = "#f6efe0";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawSurfaceFill() {
+      const steps = 18;
+      const cells = [];
+
+      function sample(u, v) {
+        const r = rotate(surfacePoint(shape, u, v));
+        const p = project(r);
+        return p ? { r, p } : null;
+      }
+
+      for (let i = 0; i < steps; i += 1) {
+        const u0 = -1 + (2 * i) / steps;
+        const u1 = -1 + (2 * (i + 1)) / steps;
+        for (let j = 0; j < steps; j += 1) {
+          const v0 = -1 + (2 * j) / steps;
+          const v1 = -1 + (2 * (j + 1)) / steps;
+
+          const a = sample(u0, v0);
+          const b = sample(u1, v0);
+          const c = sample(u1, v1);
+          const d = sample(u0, v1);
+
+          if (!a || !b || !c || !d) {
+            continue;
+          }
+
+          const avgZ = (a.r.z + b.r.z + c.r.z + d.r.z) / 4;
+          cells.push({ a: a.p, b: b.p, c: c.p, d: d.p, avgZ });
+        }
+      }
+
+      cells.sort((m, n) => m.avgZ - n.avgZ);
+
+      ctx.save();
+      for (const cell of cells) {
+        const shade = Math.max(0, Math.min(1, 0.5 + cell.avgZ / 520));
+        const alpha = 0.22 + 0.18 * shade;
+        const g = Math.round(120 + 35 * shade);
+        ctx.fillStyle = `rgba(15, ${g}, 110, ${alpha.toFixed(3)})`;
+        ctx.beginPath();
+        ctx.moveTo(cell.a.x, cell.a.y);
+        ctx.lineTo(cell.b.x, cell.b.y);
+        ctx.lineTo(cell.c.x, cell.c.y);
+        ctx.lineTo(cell.d.x, cell.d.y);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawSurfacePoints() {
+      if (!showPoints) {
+        return;
+      }
+
+      const projectedPoints = points
+        .map((p) => {
+          const projected = project(rotate(surfacePoint(shape, p.a, p.b)));
+          if (!projected) {
+            return null;
+          }
+          return { raw: p, projected };
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.projected.zCam - a.projected.zCam);
+
+      for (const entry of projectedPoints) {
+        if (Math.random() < 0.0035) {
+          entry.raw.target = entry.raw.target > 0.5 ? 0 : 1;
+        }
+        entry.raw.vis += (entry.raw.target - entry.raw.vis) * 0.02;
+        const alpha = 0.06 + 0.88 * entry.raw.vis;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(15, 118, 110, ${alpha.toFixed(3)})`;
+        ctx.arc(entry.projected.x, entry.projected.y, 2.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawSurface() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackdrop();
+      drawSurfaceFill();
+      drawSurfacePoints();
+    }
+
+    function animate() {
+      if (running) {
+        t += 0.03;
+        drawSurface();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    function pointerPosition(event) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+
+    canvas.addEventListener("pointerdown", (event) => {
+      dragging = true;
+      const p = pointerPosition(event);
+      dragX = p.x;
+      dragY = p.y;
+      canvas.setPointerCapture(event.pointerId);
+    });
+
+    canvas.addEventListener("pointermove", (event) => {
+      if (!dragging) {
+        return;
+      }
+      const p = pointerPosition(event);
+      const dx = p.x - dragX;
+      const dy = p.y - dragY;
+      dragX = p.x;
+      dragY = p.y;
+      yaw += dx * 0.008;
+      pitch += dy * 0.006;
+      pitch = Math.max(-1.45, Math.min(1.45, pitch));
+      drawSurface();
+    });
+
+    canvas.addEventListener("pointerup", () => {
+      dragging = false;
+    });
+
+    canvas.addEventListener("pointercancel", () => {
+      dragging = false;
+    });
+
+    shapeButtons.plane.addEventListener("click", () => setShape("plane"));
+    shapeButtons.sphere.addEventListener("click", () => setShape("sphere"));
+    shapeButtons.saddle.addEventListener("click", () => setShape("saddle"));
+
+    showPointsBtn.addEventListener("click", () => {
+      showPoints = true;
+      showPointsBtn.textContent = "Random Points Visible";
+      showPointsBtn.disabled = true;
+      showPointsBtn.style.opacity = "0.72";
+      drawSurface();
+    });
+
+    setShape("plane");
+    drawSurface();
+    animate();
+  </script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 # 🌌 Minkowski Space 101: Interactive Relativity Lesson
 
+## Static HTML lessons
+
+For the browser-based **Spacetime — A General Relativity Primer**, the manifold sequence, and the layer lab, see [HOSTING.md](HOSTING.md). These run without marimo or a build step. The instructions below describe the original notebook workspace.
+
 A complete, self-contained lesson on special relativity using interactive visualizations in VS Code.
 
 ## What Is This?

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manifolds Step 2 - Coordinates as a Lens</title>
+  <link rel="stylesheet" href="manifold-sequence.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Step 2: Coordinates Are a Lens, Not the Plane</h1>
+      <p>Shift the origin, rotate, and rescale the axes. The point set does not care where your coordinate frame sits.</p>
+    </header>
+
+    <section class="lesson-shell">
+      <div class="stage-wrap">
+        <canvas id="stage" width="960" height="620" aria-label="Plane with movable coordinate system"></canvas>
+      </div>
+
+      <aside class="panel">
+        <h2>Coordinate Controls</h2>
+
+        <div class="control">
+          <label for="ox">Origin x-shift</label>
+          <input id="ox" type="range" min="-300" max="300" value="40">
+        </div>
+
+        <div class="control">
+          <label for="oy">Origin y-shift</label>
+          <input id="oy" type="range" min="-220" max="220" value="-20">
+        </div>
+
+        <div class="control">
+          <label for="angle">Rotation (degrees)</label>
+          <input id="angle" type="range" min="-180" max="180" value="22">
+        </div>
+
+        <div class="control">
+          <label for="sx">x scale</label>
+          <input id="sx" type="range" min="0.5" max="2" value="1.1" step="0.01">
+        </div>
+
+        <div class="control">
+          <label for="sy">y scale</label>
+          <input id="sy" type="range" min="0.5" max="2" value="0.9" step="0.01">
+        </div>
+
+        <button id="randomize">Randomize Frame</button>
+        <button id="auto" class="secondary">Auto Transform: off</button>
+
+        <div class="readout" id="readout"></div>
+
+        <div class="callout">Observe: same points, different labels. The frame is arbitrary; the geometric set is not.</div>
+
+        <div class="nav">
+          <a href="manifolds-01-points-plane.html">Step 1</a>
+          <a class="current" href="manifolds-02-coordinates-lens.html">Step 2</a>
+          <a href="manifolds-03-moving-ball-invariance.html">Step 3</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("stage");
+    const ctx = canvas.getContext("2d");
+
+    const ox = document.getElementById("ox");
+    const oy = document.getElementById("oy");
+    const angle = document.getElementById("angle");
+    const sx = document.getElementById("sx");
+    const sy = document.getElementById("sy");
+    const randomize = document.getElementById("randomize");
+    const auto = document.getElementById("auto");
+    const readout = document.getElementById("readout");
+
+    const center = { x: canvas.width / 2, y: canvas.height / 2 };
+    const points = Array.from({ length: 160 }, () => ({
+      x: Math.random() * (canvas.width - 120) + 60,
+      y: Math.random() * (canvas.height - 120) + 60,
+      r: 1.8 + Math.random() * 2.4
+    }));
+
+    let autoMode = false;
+    let phase = 0;
+
+    function toNumber(el) {
+      return Number(el.value);
+    }
+
+    function worldToCanvas(x, y) {
+      return { x, y };
+    }
+
+    function drawBackgroundGrid() {
+      ctx.save();
+      ctx.strokeStyle = "rgba(15, 118, 110, 0.1)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= canvas.width; x += 48) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= canvas.height; y += 48) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawPoints() {
+      for (const p of points) {
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(28, 31, 35, 0.3)";
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawFrame(origin, theta, scaleX, scaleY) {
+      const c = Math.cos(theta);
+      const s = Math.sin(theta);
+
+      function basis(u, v) {
+        return {
+          x: origin.x + c * (u * scaleX) - s * (v * scaleY),
+          y: origin.y + s * (u * scaleX) + c * (v * scaleY)
+        };
+      }
+
+      const extent = 8;
+
+      ctx.save();
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = "rgba(30, 64, 175, 0.38)";
+      for (let i = -extent; i <= extent; i += 1) {
+        const p1 = basis(-extent, i);
+        const p2 = basis(extent, i);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+
+      for (let i = -extent; i <= extent; i += 1) {
+        const p1 = basis(i, -extent);
+        const p2 = basis(i, extent);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+
+      const xTip = basis(4.5, 0);
+      const yTip = basis(0, 4.5);
+
+      ctx.strokeStyle = "#1e3a8a";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(origin.x, origin.y);
+      ctx.lineTo(xTip.x, xTip.y);
+      ctx.stroke();
+
+      ctx.strokeStyle = "#b45309";
+      ctx.beginPath();
+      ctx.moveTo(origin.x, origin.y);
+      ctx.lineTo(yTip.x, yTip.y);
+      ctx.stroke();
+
+      ctx.fillStyle = "#1e3a8a";
+      ctx.font = "700 18px Space Grotesk";
+      ctx.fillText("x'", xTip.x + 8, xTip.y + 8);
+      ctx.fillStyle = "#b45309";
+      ctx.fillText("y'", yTip.x + 8, yTip.y + 8);
+
+      ctx.fillStyle = "#0f766e";
+      ctx.beginPath();
+      ctx.arc(origin.x, origin.y, 5.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillText("O'", origin.x + 10, origin.y - 8);
+
+      ctx.restore();
+    }
+
+    function updateReadout(origin, theta, scaleX, scaleY) {
+      readout.textContent = [
+        `origin = (${(origin.x - center.x).toFixed(1)}, ${(center.y - origin.y).toFixed(1)})`,
+        `rotation = ${(theta * 180 / Math.PI).toFixed(1)} deg`,
+        `scale = (${scaleX.toFixed(2)}, ${scaleY.toFixed(2)})`
+      ].join("\n");
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackgroundGrid();
+      drawPoints();
+
+      const origin = {
+        x: center.x + toNumber(ox),
+        y: center.y + toNumber(oy)
+      };
+      const theta = toNumber(angle) * Math.PI / 180;
+      const scaleX = toNumber(sx) * 42;
+      const scaleY = toNumber(sy) * 42;
+
+      drawFrame(origin, theta, scaleX, scaleY);
+      updateReadout(origin, theta, toNumber(sx), toNumber(sy));
+    }
+
+    function tick() {
+      if (autoMode) {
+        phase += 0.01;
+        ox.value = (Math.sin(phase * 0.9) * 180).toFixed(1);
+        oy.value = (Math.cos(phase * 0.8) * 140).toFixed(1);
+        angle.value = (Math.sin(phase * 0.7) * 120).toFixed(1);
+        sx.value = (1.0 + 0.5 * (0.5 + 0.5 * Math.sin(phase * 0.5))).toFixed(2);
+        sy.value = (0.8 + 0.65 * (0.5 + 0.5 * Math.cos(phase * 0.6))).toFixed(2);
+      }
+      render();
+      requestAnimationFrame(tick);
+    }
+
+    randomize.addEventListener("click", () => {
+      ox.value = (Math.random() * 600 - 300).toFixed(0);
+      oy.value = (Math.random() * 440 - 220).toFixed(0);
+      angle.value = (Math.random() * 360 - 180).toFixed(0);
+      sx.value = (0.5 + Math.random() * 1.5).toFixed(2);
+      sy.value = (0.5 + Math.random() * 1.5).toFixed(2);
+      render();
+    });
+
+    auto.addEventListener("click", () => {
+      autoMode = !autoMode;
+      auto.textContent = autoMode ? "Auto Transform: on" : "Auto Transform: off";
+    });
+
+    for (const el of [ox, oy, angle, sx, sy]) {
+      el.addEventListener("input", render);
+    }
+
+    render();
+    tick();
+  </script>
+</body>
+</html>

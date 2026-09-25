@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spacetime — A General Relativity Primer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="canvas" aria-label="Interactive spacetime manifold visualization"></canvas>
+
+  <h1 id="title">SPACETIME</h1>
+
+  <div id="narrative" aria-live="polite"></div>
+
+  <nav id="nav">
+    <div id="dots"></div>
+    <button id="next" type="button" aria-label="Advance lesson">Begin</button>
+  </nav>
+
+  <aside id="coord-panel">
+    <h3>Coordinates</h3>
+
+    <label>Origin x <output id="ox-val">0.00</output></label>
+    <input id="ox" type="range" min="-1" max="1" step="0.01" value="0">
+
+    <label>Origin y <output id="oy-val">0.00</output></label>
+    <input id="oy" type="range" min="-1" max="1" step="0.01" value="0">
+
+    <label>Rotation <output id="rot-val">0°</output></label>
+    <input id="rot" type="range" min="-180" max="180" step="1" value="0">
+
+    <label>Scale x <output id="scx-val">1.00</output></label>
+    <input id="scx" type="range" min="0.4" max="2.2" step="0.01" value="1">
+
+    <label>Scale y <output id="scy-val">1.00</output></label>
+    <input id="scy" type="range" min="0.4" max="2.2" step="0.01" value="1">
+
+    <div id="frame-section">
+      <div class="cp-divider"></div>
+      <h3>Frame</h3>
+
+      <label>vx <output id="fvx-val">0.00</output></label>
+      <input id="fvx" type="range" min="-0.30" max="0.30" step="0.005" value="0">
+
+      <label>vy <output id="fvy-val">0.00</output></label>
+      <input id="fvy" type="range" min="-0.30" max="0.30" step="0.005" value="0">
+
+      <div class="cp-buttons">
+        <button id="match-a" type="button" class="match-btn ma">&#9679; Match</button>
+        <button id="match-b" type="button" class="match-btn mb">&#9679; Match</button>
+      </div>
+      <button id="lock-view" type="button" class="lock-btn">Lock view</button>
+    </div>
+  </aside>
+
+  <aside id="vector-panel">
+    <div id="vp-pos" class="vp-section">
+      <h3>Position</h3>
+      <div class="vp-data" id="vp-pos-data">
+        <div class="vp-row"><span class="vp-label vp-xc">x&#x2032;</span><span class="vp-val" id="vp-x">&mdash;</span></div>
+        <div class="vp-row"><span class="vp-label vp-yc">y&#x2032;</span><span class="vp-val" id="vp-y">&mdash;</span></div>
+        <div class="vp-divider"></div>
+        <div class="vp-row"><span class="vp-label vp-mc">|r|</span><span class="vp-val vp-mc" id="vp-mag">&mdash;</span></div>
+      </div>
+      <p class="vp-hint" id="vp-hint">Click the surface to place a point</p>
+    </div>
+
+    <div id="vp-vel" class="vp-section">
+      <h3>Velocity</h3>
+      <div class="vp-row"><span class="vp-label vp-mc">Speed</span><span class="vp-val vp-mc" id="vp-speed">&mdash;</span></div>
+    </div>
+
+    <div id="vp-rel" class="vp-section">
+      <h3>Velocities</h3>
+      <div class="vp-row"><span class="vp-label vp-ac">&#9679; Speed</span><span class="vp-val" id="vp-sa">&mdash;</span></div>
+      <div class="vp-row"><span class="vp-label vp-bc">&#9679; Speed</span><span class="vp-val" id="vp-sb">&mdash;</span></div>
+      <div class="vp-divider"></div>
+      <div class="vp-row"><span class="vp-label vp-mc">Relative</span><span class="vp-val vp-mc" id="vp-rel-speed">&mdash;</span></div>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

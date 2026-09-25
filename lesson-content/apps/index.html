@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manifold Layer Lab</title>
+  <link rel="stylesheet" href="lesson-app.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <h1>Manifold Layer Lab</h1>
+      <p>Start with a smooth manifold and progressively add conceptual layers: points, coordinates, particle motion, and velocity components. This is the base framework for future layers like metric tensor and connection.</p>
+    </header>
+
+    <section class="workbench">
+      <div class="stage-card">
+        <div class="stage-toolbar">
+          <div class="shape-group">
+            <button class="shape-btn" data-shape="plane">Plane</button>
+            <button class="shape-btn" data-shape="sphere">Sphere</button>
+            <button class="shape-btn" data-shape="saddle">Saddle</button>
+          </div>
+          <button id="dragHint" class="ghost-btn" type="button">Drag to Rotate</button>
+        </div>
+        <canvas id="stage" width="1120" height="700" aria-label="Layered manifold lesson canvas"></canvas>
+      </div>
+
+      <aside class="control-card">
+        <h2>Lesson Layers</h2>
+
+        <div class="scene-row">
+          <button class="scene-btn" data-scene="1">Scene 1: Manifold</button>
+          <button class="scene-btn" data-scene="2">Scene 2: Add Points</button>
+          <button class="scene-btn" data-scene="3">Scene 3: Add Coordinates</button>
+          <button class="scene-btn" data-scene="4">Scene 4: Add Motion</button>
+        </div>
+
+        <div class="layers" id="layerControls"></div>
+
+        <div class="control-line">
+          <label class="toggle">
+            <input id="animateTransform" type="checkbox" checked>
+            <span>Animate coordinate transformation</span>
+          </label>
+        </div>
+
+        <div class="control-line">
+          <button id="resetView" class="ghost-btn" type="button">Reset View</button>
+        </div>
+
+        <div class="notes">
+          <strong>Framework intent:</strong>
+          <p>The manifold is the base space. Every new concept is a layer drawn on top: point set, coordinate chart, vectors, then geometric structures.</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="lesson-app.js"></script>
+</body>
+</html>

@@ -16,14 +16,7 @@
           }
         }
       ],
-      "console": [
-        {
-          "type": "stream",
-          "name": "stderr",
-          "text": "Matplotlib is building the font cache; this may take a moment.\n",
-          "mimetype": "text/plain"
-        }
-      ]
+      "console": []
     },
     {
       "id": "MJUe",
@@ -41,13 +34,27 @@
     {
       "id": "vblA",
       "code_hash": "cd178fc7de4f4b71ece51c6b431ef3ac",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
       "console": []
     },
     {
       "id": "bkHC",
       "code_hash": "b73f734e1d1981c13db8b72d92e74ba3",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Your path:</strong> Wonderful! Let's deepen your geometric understanding.</span></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -65,8 +72,28 @@
     },
     {
       "id": "PKri",
-      "code_hash": "4aad7cf02ab5870e795ca565d5be62b3",
-      "outputs": [],
+      "code_hash": "0446459f7fb7e7ef9b4d8a24b868236b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='PKri-0' random-id='4a7c7773-3ee1-fa6e-49f6-8d29c85d3dc1'><marimo-slider data-initial-value='0.6' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eObserver velocity (fraction of c):&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.0' data-stop='0.95' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element><marimo-ui-element object-id='PKri-1' random-id='322410b4-5e8b-f534-adf4-a80fa3cb2ad1'><marimo-slider data-initial-value='1.0' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eLight beam (always c):&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.999' data-stop='1.0' data-step='0.001' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "ca79d2218e2fec1c539e8366bb89b2a6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>You're moving at 75.0% of light speed.</strong></span>\n<span class=\"paragraph\">Galilean addition would give: 75.0% + 100% = 175.0%</span>\n<span class=\"paragraph\">But relativistic addition gives us... let me calculate:</span></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -109,8 +136,28 @@
     },
     {
       "id": "Kclp",
-      "code_hash": "4c2a2d22b03b1d07b36832f213612eff",
-      "outputs": [],
+      "code_hash": "9dcceb80c25ed36211dc6b3227b04f67",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='Kclp-0' random-id='96d8acaf-2ddf-e19a-6b6e-6f36eaad4783'><marimo-slider data-initial-value='0.6' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eObserver velocity (fraction of c):&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.0' data-stop='0.95' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "ec5bcc44aaf1d11ebef8a53ac5812a48",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Velocity: 60.0%c</strong></span></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -127,8 +174,28 @@
     },
     {
       "id": "nWHF",
-      "code_hash": "ac7ec6b236519ba4c5881a047840455e",
-      "outputs": [],
+      "code_hash": "cfafee6699d85ba08ba6ab0e8388c163",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='nWHF-0' random-id='efda9ff9-06f2-e172-f287-f0ab61043884'><marimo-slider data-initial-value='0.6' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eObserver velocity (fraction of c):&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.0' data-stop='0.95' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "62c376ed639a46192fbe3c2baa5d3f30",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Velocity: 60.0%c</strong></span></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -158,8 +225,28 @@
     },
     {
       "id": "qnkX",
-      "code_hash": "e729f55798af8eca7adab6214544b322",
-      "outputs": [],
+      "code_hash": "afd30a14b9b1f0740757a7d93b0b8e32",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='qnkX-0' random-id='abd5aa0e-1c36-cab8-cec6-d4ca9ce3002b'><marimo-slider data-initial-value='0.6' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eObserver velocity (fraction of c):&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.1' data-stop='0.95' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "4f819387c6ba9d6c9ffedbc52571a7ed",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Velocity: 95.0%c</strong></span></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -240,8 +327,28 @@
     },
     {
       "id": "nHfw",
-      "code_hash": "5de9a5ed0b16824e18554a1180f1f1f4",
-      "outputs": [],
+      "code_hash": "045b6b9e47ceedccab74bb91ce929b83",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='nHfw-0' random-id='f1df55cb-6d28-4388-30ea-59b8b341dcc8'><marimo-text-area data-initial-value='&quot;&quot;' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eYour one-sentence explanation:&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-placeholder='&quot;Example: A moving clock follows a tilted worldline, so its proper time projects to a longer coordinate time in another frame.&quot;' data-disabled='false' data-debounce='true' data-full-width='false'></marimo-text-area></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "09c11ddf344757d721b6f71f5e6bc9d0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Your note:</strong>\n(waiting for your explanation...)</span></span>"
+          }
+        }
+      ],
       "console": []
     },
     {

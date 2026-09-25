@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manifolds Step 3 - Motion and Invariance</title>
+  <link rel="stylesheet" href="manifold-sequence.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Step 3: Components Change, Geometry Does Not</h1>
+      <p>A ball moves on a fixed geometric path while the coordinate frame transforms. Velocity components change; the geometric velocity and invariant speed remain consistent.</p>
+    </header>
+
+    <section class="lesson-shell">
+      <div class="stage-wrap">
+        <canvas id="stage" width="960" height="620" aria-label="Moving ball with transforming coordinates and velocity decomposition"></canvas>
+      </div>
+
+      <aside class="panel">
+        <h2>Live Controls</h2>
+
+        <div class="control">
+          <label for="speed">Particle speed parameter</label>
+          <input id="speed" type="range" min="0.2" max="2" value="1" step="0.05">
+        </div>
+
+        <div class="control">
+          <label for="transformRate">Coordinate transform rate</label>
+          <input id="transformRate" type="range" min="0.2" max="2.2" value="1" step="0.05">
+        </div>
+
+        <button id="toggleTrafo">Auto transform: on</button>
+        <button id="toggleMotion" class="secondary">Pause motion</button>
+        <button id="reset" class="ghost">Reset phase</button>
+
+        <div class="readout" id="readout"></div>
+
+        <div id="invariance" class="callout"></div>
+
+        <h3>Teaching line</h3>
+        <p>The coordinate numbers are not fake, but they are frame-dependent. Physics is the transformation-stable content.</p>
+
+        <div class="nav">
+          <a href="manifolds-01-points-plane.html">Step 1</a>
+          <a href="manifolds-02-coordinates-lens.html">Step 2</a>
+          <a class="current" href="manifolds-03-moving-ball-invariance.html">Step 3</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("stage");
+    const ctx = canvas.getContext("2d");
+
+    const speedSlider = document.getElementById("speed");
+    const transformRateSlider = document.getElementById("transformRate");
+    const toggleTrafo = document.getElementById("toggleTrafo");
+    const toggleMotion = document.getElementById("toggleMotion");
+    const reset = document.getElementById("reset");
+    const readout = document.getElementById("readout");
+    const invariance = document.getElementById("invariance");
+
+    const center = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    let t = 0;
+    let motionRunning = true;
+    let trafoRunning = true;
+    let framePhase = 0;
+
+    function path(tVal) {
+      return {
+        x: center.x + 260 * Math.cos(0.62 * tVal),
+        y: center.y + 140 * Math.sin(tVal)
+      };
+    }
+
+    function velocity(tVal) {
+      const dt = 0.0009;
+      const p1 = path(tVal);
+      const p2 = path(tVal + dt);
+      return {
+        x: (p2.x - p1.x) / dt,
+        y: (p2.y - p1.y) / dt
+      };
+    }
+
+    function frame(phase) {
+      const rate = Number(transformRateSlider.value);
+      const ph = phase * rate;
+      return {
+        ox: center.x + 150 * Math.sin(0.8 * ph),
+        oy: center.y + 110 * Math.cos(0.7 * ph),
+        theta: 1.2 * Math.sin(0.5 * ph),
+        sx: 36 * (0.8 + 0.5 * (0.5 + 0.5 * Math.sin(0.43 * ph))),
+        sy: 36 * (0.85 + 0.55 * (0.5 + 0.5 * Math.cos(0.47 * ph)))
+      };
+    }
+
+    function drawWorldGrid() {
+      ctx.save();
+      ctx.strokeStyle = "rgba(15, 118, 110, 0.12)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= canvas.width; x += 48) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= canvas.height; y += 48) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawPath() {
+      ctx.save();
+      ctx.strokeStyle = "rgba(180, 83, 9, 0.9)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for (let i = 0; i <= 500; i += 1) {
+        const p = path((i / 500) * Math.PI * 2);
+        if (i === 0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawFrame(f) {
+      const c = Math.cos(f.theta);
+      const s = Math.sin(f.theta);
+
+      function basis(u, v) {
+        return {
+          x: f.ox + c * (u * f.sx) - s * (v * f.sy),
+          y: f.oy + s * (u * f.sx) + c * (v * f.sy)
+        };
+      }
+
+      const extent = 7;
+      ctx.save();
+      ctx.strokeStyle = "rgba(30, 64, 175, 0.35)";
+      ctx.lineWidth = 1;
+      for (let i = -extent; i <= extent; i += 1) {
+        const p1 = basis(-extent, i);
+        const p2 = basis(extent, i);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      for (let i = -extent; i <= extent; i += 1) {
+        const p1 = basis(i, -extent);
+        const p2 = basis(i, extent);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+
+      const xTip = basis(4.2, 0);
+      const yTip = basis(0, 4.2);
+
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#1e3a8a";
+      ctx.beginPath();
+      ctx.moveTo(f.ox, f.oy);
+      ctx.lineTo(xTip.x, xTip.y);
+      ctx.stroke();
+
+      ctx.strokeStyle = "#b45309";
+      ctx.beginPath();
+      ctx.moveTo(f.ox, f.oy);
+      ctx.lineTo(yTip.x, yTip.y);
+      ctx.stroke();
+
+      ctx.fillStyle = "#0f766e";
+      ctx.beginPath();
+      ctx.arc(f.ox, f.oy, 5.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function decomposeVelocity(vWorld, f) {
+      const c = Math.cos(f.theta);
+      const s = Math.sin(f.theta);
+
+      const u1 = c * vWorld.x + s * vWorld.y;
+      const u2 = -s * vWorld.x + c * vWorld.y;
+
+      const vxPrime = u1 / f.sx;
+      const vyPrime = u2 / f.sy;
+
+      const g11 = f.sx * f.sx;
+      const g22 = f.sy * f.sy;
+      const invSq = g11 * vxPrime * vxPrime + g22 * vyPrime * vyPrime;
+
+      return { vxPrime, vyPrime, invSq };
+    }
+
+    function drawBallAndVelocity(p, v) {
+      const scale = 0.07;
+      const q = { x: p.x + v.x * scale, y: p.y + v.y * scale };
+
+      ctx.save();
+      ctx.fillStyle = "#be123c";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "#111827";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(q.x, q.y);
+      ctx.stroke();
+
+      ctx.fillStyle = "#111827";
+      ctx.font = "700 17px Space Grotesk";
+      ctx.fillText("v", q.x + 8, q.y - 2);
+      ctx.restore();
+    }
+
+    function updateReadouts(vWorld, comp, f) {
+      const speedWorld = Math.hypot(vWorld.x, vWorld.y);
+      const speedInv = Math.sqrt(comp.invSq);
+      const delta = Math.abs(speedWorld - speedInv);
+
+      readout.textContent = [
+        `v_world = (${vWorld.x.toFixed(2)}, ${vWorld.y.toFixed(2)}) px/s`,
+        `v_components = (${comp.vxPrime.toFixed(3)}, ${comp.vyPrime.toFixed(3)}) in (x', y')`,
+        `origin' = (${(f.ox - center.x).toFixed(1)}, ${(center.y - f.oy).toFixed(1)})`
+      ].join("\n");
+
+      const stateClass = delta < 1e-6 ? "status-ok" : "status-alert";
+      invariance.innerHTML = [
+        `<span class="${stateClass}">Invariant check:</span>`,
+        `|v| (world) = ${speedWorld.toFixed(4)}`,
+        `|v| from transformed components + metric = ${speedInv.toFixed(4)}`,
+        `difference = ${delta.toExponential(2)}`
+      ].join("<br>");
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawWorldGrid();
+      drawPath();
+
+      const f = frame(framePhase);
+      drawFrame(f);
+
+      const p = path(t);
+      const v = velocity(t);
+      const comp = decomposeVelocity(v, f);
+
+      drawBallAndVelocity(p, v);
+      updateReadouts(v, comp, f);
+    }
+
+    function tick() {
+      const speed = Number(speedSlider.value);
+      if (motionRunning) {
+        t += 0.012 * speed;
+      }
+      if (trafoRunning) {
+        framePhase += 0.012;
+      }
+      render();
+      requestAnimationFrame(tick);
+    }
+
+    toggleTrafo.addEventListener("click", () => {
+      trafoRunning = !trafoRunning;
+      toggleTrafo.textContent = trafoRunning ? "Auto transform: on" : "Auto transform: off";
+    });
+
+    toggleMotion.addEventListener("click", () => {
+      motionRunning = !motionRunning;
+      toggleMotion.textContent = motionRunning ? "Pause motion" : "Resume motion";
+    });
+
+    reset.addEventListener("click", () => {
+      t = 0;
+      framePhase = 0;
+      render();
+    });
+
+    render();
+    tick();
+  </script>
+</body>
+</html>

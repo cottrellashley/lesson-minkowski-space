@@ -12,6 +12,12 @@ dependencies = [
     "sympy>=1.12",
     "watchdog>=3.0",
     "pypdf>=6.13.3",
+    "ipykernel>=7.3.0",
+    "jupyterlab>=4.6.0",
+    "pandas>=2.3.3",
+    "scipy>=1.15.3",
+    "seaborn>=0.13.2",
+    "plotly>=6.8.0",
 ]
 
 [build-system]
